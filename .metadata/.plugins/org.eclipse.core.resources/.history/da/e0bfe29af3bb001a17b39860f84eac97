@@ -1,0 +1,76 @@
+package com.libgdx.lebmorda.scene2D.actors;
+
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Rectangle;
+import com.libgdx.lebmorda.utils.LoaderManager;
+
+public abstract class SpriteActor extends ActorBuilder {
+	protected Rectangle bounds;
+
+	protected Texture img;
+	protected TextureRegion imgRegion;
+	protected Sprite spriteImg;
+	protected float[] verticesSprite;
+
+	public SpriteActor(String name) {
+		loadTexture(name);
+	}
+
+	/**
+	 * Cargamos la textura
+	 * 
+	 * @param name
+	 */
+	protected void loadTexture(String name) {
+		img = LoaderManager.getAssetManager().get(name);
+		if (img != null) {
+			spriteImg = new Sprite(img);
+			imgRegion = new TextureRegion(img);
+			setWidth(img.getWidth());
+			setHeight(img.getHeight());
+		}
+	}
+
+	/**
+	 * Método encargado de pintar al actor todos los atributos que le indiquemos
+	 */
+	@Override
+	public void draw(Batch batch, float parentAlpha) {
+
+//		spriteImg.setPosition(this.getX(), this.getY());
+//		spriteImg.setOrigin(getOriginX(), getOriginY());
+//		spriteImg.setScale(getScaleX(), getScaleY());
+//		spriteImg.setRotation(getRotation());
+//		spriteImg.setSize(getWidth(), getHeight());
+//		spriteImg.setColor(getColor().r, getColor().g, getColor().b, getColor().a * parentAlpha);
+	spriteImg.draw(batch);
+
+		/**
+		 * Podemos utiliazar tanto un Objeto de tipo Texture, TextureRegion, Sprite.
+		 * Parece que el Sprite es el que mas opciones tiene
+		 */
+		// batch.draw(spriteImg, getX(), getY(), getOriginX(), getOriginY(), getWidth(),
+		// getHeight(), getScaleX(),
+		// getScaleY(), getRotation());
+
+	}
+
+	public float[] getVerticesSprite() {
+		return spriteImg.getVertices();
+	}
+
+	public void setBounds(Rectangle bounds) {
+		this.bounds = bounds;
+	}
+
+	public Sprite getSpriteImg() {
+		return spriteImg;
+	}
+
+	public void setSpriteImg(Sprite spriteImg) {
+		this.spriteImg = spriteImg;
+	}
+}

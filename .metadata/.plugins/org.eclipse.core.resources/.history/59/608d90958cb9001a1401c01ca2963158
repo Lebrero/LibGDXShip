@@ -1,0 +1,77 @@
+package com.libgdx.lebmorda.screens;
+
+import java.text.DecimalFormat;
+import java.util.Random;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.libgdx.lebmorda.customUI.GameLabel;
+import com.libgdx.lebmorda.main.BasicGame;
+import com.libgdx.lebmorda.utils.LoaderManager;
+
+public class LoadingScreen extends ScreenAdapter {
+
+	private Stage stage;
+
+	private Skin skin;
+
+	private GameLabel loading;
+
+	private BasicGame game;
+	private DecimalFormat df;
+
+	private float percent;
+
+	Random rd;
+
+	@Override
+	public void show() {
+		df = new DecimalFormat("0");
+		rd = new Random();
+
+		stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
+		skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
+
+		loading = new GameLabel("Loading...", skin);
+		loading.setPosition(320 - loading.getWidth() / 2, 180 - loading.getHeight() / 2);
+		stage.addActor(loading);
+	}
+
+	public LoadingScreen(BasicGame game) {
+		this.game = game;
+	}
+
+	@Override
+	public void render(float delta) {
+		Gdx.gl.glClearColor(0, 0, 0, 1);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+		percent = Interpolation.linear.apply(percent, LoaderManager.getAssetManager().getProgress() * 100, 0.02f);
+
+		// int progress = (int) (LoaderManager.getAssetManager().getProgress() * 100);
+		if (rd.nextBoolean()) {
+			if (rd.nextBoolean()) {
+				loading.setText("Loading... " + df.format(percent) + "%");
+			}
+		}
+		if (LoaderManager.getAssetManager().update() && df.format(percent) == 100.00) {
+			if (Gdx.input.isTouched()) {
+				game.setScreen(new TitleScreen(game));
+			}
+		}
+		stage.act();
+		stage.draw();
+	}
+
+	@Override
+	public void dispose() {
+		stage.dispose();
+		skin.dispose();
+	}
+}

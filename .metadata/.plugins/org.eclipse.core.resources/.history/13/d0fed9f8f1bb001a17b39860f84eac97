@@ -1,0 +1,23 @@
+package com.libgdx.lebmorda.scene2D.actors;
+
+import com.badlogic.gdx.math.Rectangle;
+
+public class NaveActor extends SpriteActor {
+	
+	public NaveActor(String name, Rectangle bounds) {
+		super(name);
+	}
+	
+	public NaveActor(String name) {
+		super(name);
+	}
+/**
+ * Atributos propios de una nave
+ * 
+ * 
+ * - Vida
+ * - State
+ * - Disparo
+ * 
+ */
+}
